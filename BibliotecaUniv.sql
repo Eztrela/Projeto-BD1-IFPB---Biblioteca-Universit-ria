@@ -7,7 +7,7 @@ use BibliotecaUniv;
 
 /*** Criação da Tabela Autor ***/
 create table Autor(
-	cod_autor						int				not null,
+	cod_autor						int				not null ,
     nome							varchar(45)		not null,
     /* tem q colocar a constraint de nao poder ser data futura*/
     data_de_nascimento				date			not null,
@@ -140,6 +140,54 @@ create table Emprestimo(
     constraint pk_emprestimo		primary key (matricula_usuario,cod_exemplar,data_de_emprestimo)
     /* Como fazer o constraint de check de data */
 );
+/* Inserindo informações na tabela autor */
+insert into Autor(nome, data_de_nascimento)
+values(1,'Eva Heller', '1948-08-08'), /*psicologia das cores*/
+(2, 'Andrew Stuart Tanenbaum', '1944-03-16'),/* Sistemas Operativos Modernos*/
+(3, 'Charles Duhigg', '1974'), /*o poder do hábito*/
+(4, 'Stephen Hawking', '1942-01-08'), /*uma breve história do tempo*/
+(5, 'Karl Marx', '1818-05-05'); /* O capital*/
+
+/* Inserindo informações na tabela livro*/
+insert into Livro(ISBN, editora, numero_da_edicao, titulo, classificacao_por_assunto)
+values('978-3-17-418129-1', 'Pearson' , 4, 'Sistemas Operativos Modernos', 'tecnologia');
+
+insert into Livro(ISBN, editora, titulo, classificacao_por_assunto)
+values(518-6-16-148750-0, 'olhares', 'Psicologia das cores', 'designer' ),
+(759-3-15-475129-1, 'objetiva', 'O poder do hábito', 'psicologia'),
+(083-3-93-473459-0, 'intrinsace', 'Uma Breve História do Tempo', 'física'),
+(453-4-23-203453-0, 'Veneta', 'O capital','sociologia' );
+
+/* Inserindo informações na tabela Exemplar*/
+insert into Livro(cod_exemplar, quantidade, ISBN_livro)
+values(02946, 20, 518-6-16-148750-0), /*Psicologia das cores*/
+(01298, 10, 978-3-17-418129-1),/*Sistemas Operativos Modernos*/
+(68460, 40, 759-3-15-475129-1),/*O poder do hábito*/
+(47420, 21, 083-3-93-473459-0), /*Uma breve história do tempo*/ 
+(07213, 13, 453-4-23-203453-0);/*O capital*/
+
+/* Inserindo informações na tabela Escrito_por*/
+insert into Escrito_por(cod_autor, ISBN_livro)
+values(1, 02946), /*Psicologia das cores*/
+(2, 01298),/*Sistemas Operativos Modernos*/
+(3, 68460),/*O poder do hábito*/
+(4, 47420), /*Uma breve história do tempo*/ 
+(5, 07213);/*O capital*/
+
+/* Inserindo informações na tabela Usuario */
+ insert into Usuario(matricula, nome, data_de_nascimento, rua, UF, CEP, cidade, bairro, numero, foto, data_de_validade, qr_code)
+values(20221370059, 'Vanessa Silva', '2000-09-31', 'Avenida Coremas','PB', '58013-430', 'João Pessoa','Centro','561' , load_file('imagem.png'), '2024-12-31', load_file('imagem.png')),
+(20221370086, 'Rita Clara', '2001-11-08', 'Rua Comerciário Antônio Manoel de Sousa','PB', '58071-585', 'João Pessoa','Cristo Redentor','201' , load_file('imagem.png'), '2022-12-31', load_file('imagem.png')),
+(20221370077, 'Laís Epifanio Machado', '2002-10-10', 'Rua Osvaldo Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','16' , load_file('imagem.png'), '2023-12-31', load_file('imagem.png')),
+(20221370029, 'Cleiton Bernadino', '2001-11-08', 'Conjunto Jacinto Medeiros','PB', '58026-080', 'João Pessoa','Treze de Maio','120' , load_file('imagem.png'), '2022-12-31', load_file('imagem.png')),
+(20221370002, 'Raimundo de Moraes', '2004-03-23', 'Rua Guadalupe','PB', '58079-806', 'João Pessoa','Grotão','777' , load_file('imagem.png'), '2024-12-31', load_file('imagem.png'));
+
+
+
+
+
+
+/*** Criação da Tabela Usuário ***/
 
 
 
