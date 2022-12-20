@@ -47,7 +47,7 @@ create table Escrito_por(
 
 /*** Criação da Tabela Usuário ***/
 create table Usuario(
-	matricula							int				not null,
+	matricula							bigint			not null,
     nome								varchar(45)		not null,
     /* tem q colocar a constraint de nao poder ser data futura*/
     data_de_nascimento					date			not null,
@@ -130,7 +130,7 @@ create table Atendente(
 /*** Criação da Tabela Empréstimo ***/
 create table Emprestimo(
 	matricula_usuario					int				not null,
-    cpf_funcionario						int				null,
+    cpf_funcionario						char(11)		null,
     cod_exemplar						int				not null,
     /* tem q colocar a constraint de nao poder ser data futura*/
     data_de_emprestimo					date			not null,
@@ -139,9 +139,9 @@ create table Emprestimo(
     constraint fk_usuario_matricula		foreign key (matricula_usuario) references Usuario (matricula),
     constraint fk_cod_exemplar			foreign key (cod_exemplar) references Exemplar (cod_exemplar),
     constraint fk_cpf_funcionario		foreign key (cpf_funcionario) references Funcionario (cpf),
-    constraint pk_emprestimo			primary key (matricula_usuario,cod_exemplar,data_de_emprestimo),
-    constraint ck_data_de_emprestimo	check(data_de_emprestimo < data_de_devolucao),
-    constraint ck_data_de_devolucao		check(data_de_devolucao > data_de_emprestimo)
+    constraint ck_data_de_emprestimo	check(data_de_emprestimo <= sysdate()),
+    constraint ck_data_de_devolucao		check(data_de_devolucao > sysdate()),
+	constraint pk_emprestimo			primary key (matricula_usuario,cod_exemplar,data_de_emprestimo)
     /* Como fazer o constraint de check de data */
 );
 
@@ -189,11 +189,11 @@ select * from Escrito_por;
 
 /* Inserindo informações na tabela Usuario */
 insert into Usuario(matricula, nome, data_de_nascimento, rua, UF, CEP, cidade, bairro, numero, foto, data_de_validade, qr_code)
-values(2022001, 'Vanessa Silva', '2000-10-31', 'Avenida Coremas','PB', '58013-430', 'João Pessoa','Centro','561' , load_file('/var/lib/mysql-files/imagem.png'), '2024-12-31', load_file('/var/lib/mysql-files/imagem.png')),
-(2022002, 'Rita Clara', '2001-11-06', 'Rua Comerciário Antônio Manoel de Sousa','PB', '58071-585', 'João Pessoa','Cristo Redentor','20' , load_file('/var/lib/mysql-files/imagem.png'), '2022-12-31', load_file('/var/lib/mysql-files/imagem.png')),
-(2022003, 'Laís Epifanio Machado', '2002-10-10', 'Rua Osvaldo Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','16' , load_file('/var/lib/mysql-files/imagem.png'), '2023-12-31', load_file('/var/lib/mysql-files/imagem.png')),
-(2022004, 'Cleiton Bernadino', '2001-11-08', 'Conjunto Jacinto Medeiros','PB', '58026-080', 'João Pessoa','Treze de Maio','120' , load_file('/var/lib/mysql-files/imagem.png'), '2022-12-31', load_file('/var/lib/mysql-files/imagem.png')),
-(2022005, 'Raimundo de Moraes', '2004-03-23', 'Rua Guadalupe','PB', '58079-806', 'João Pessoa','Grotão', '777', load_file('/var/lib/mysql-files/imagem.png'), '2024-12-31', load_file('/var/lib/mysql-files/imagem.png'));
+values(2022001, 'Vanessa Silva', '2000-10-31', 'Avenida Coremas','PB', '58013-430', 'João Pessoa','Centro','561' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2024-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
+(2022002, 'Rita Clara', '2001-11-06', 'Rua Comerciário Antônio Manoel de Sousa','PB', '58071-585', 'João Pessoa','Cristo Redentor','20' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2022-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
+(2022003, 'Laís Epifanio Machado', '2002-10-10', 'Rua Osvaldo Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','16' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2023-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
+(2022004, 'Cleiton Bernadino', '2001-11-08', 'Conjunto Jacinto Medeiros','PB', '58026-080', 'João Pessoa','Treze de Maio','120' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2022-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
+(2022005, 'Raimundo de Moraes', '2004-03-23', 'Rua Guadalupe','PB', '58079-806', 'João Pessoa','Grotão', '777', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2024-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'));
 select * from Usuario;
 
 /* 
@@ -212,33 +212,36 @@ select * from Email;
 
 /* Inserindo informações na tabela telefone*/
 insert into Telefone(telefone, matricula_usuario)
-values(98854-1234, 2022001),
-(94002-8922, 2022002),
-(92034-9933, 2022003),
-(91234-5678, 2022004),
-(98765-4321, 2022005);
+values('98854-1234', 2022001),
+('94002-8922', 2022002),
+('92034-9933', 2022003),
+('91234-5678', 2022004),
+('98765-4321', 2022005);
 select * from Telefone;
+
+/*finalizar os inserts e corrigir os que ricardo fez*/
+insert into Funcionario(cpf, nome, telefone, data_de_nascimento, rua, uf, cep,
+ cidade, bairro,numero, login_atendente, senha_atendente, tipo, cpf_responsavel_cadastro)
+value('10274829351','Caetano Veloso', '98867-1235', '1975-10-05', 'Avenida Coremas','PB', '58013-430', 'João Pessoa','Centro','565' , null, null, null, null),
+('15624829361','Alcione', '99357-1251', '1955-11-13', 'Rua Guadalupe','PB', '58079-806', 'João Pessoa','Grotão', '777', null, null, null, '10274829351'),
+('12924862965','Renata Costa', '98887-1235', '1975-03-05', 'Rua Comerciário Antônio Manoel de Sousa','PB', '58071-585', 'João Pessoa','Cristo Redentor','18', null, null, null, '10274829351'),
+('10252049367','Catarina Rios', '98868-3215', '1985-10-10', 'Conjunto Jacinto Medeiros','PB', '58026-080', 'João Pessoa','Treze de Maio','122', null, null, null, '10274829351'),
+('41274829954','Felipe Neto', '98867-1235', '1984-04-11', 'Rua Osvaldo Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','19', null, null, null, '10274829351');
+/*Inserindo informações na tabela de Atendentes*/
+select * from Funcionario;
 
 
 /* tem que corrigir essas tabelas antes de fazer a inserção */
 /*Inserindo informações na tabela empréstimo*/
-insert into Empréstimo(matricula_usuario, cpf_funcionario, cod_exemplar,data_de_emprestimo, data_de_devolucao)
-value(20221370059, 111111111-11 ,02946, 2022-11-20, 2022-12-20), /* Vanessa fez um empréstimo livro "Psicologia das cores"*/
-(20221370086, 111111111-11 ,02946, 2022-11-30, 2022-12-30), /* Rita fez um empréstimo livro "Psicologia das cores"*/
-(20221370077, 111111111-11 ,47420, 2022-11-06, 2022-12-06), /* Laís fez um empréstimo livro "Uma breve história do tempo"*/
-(20221370029, 111111111-11 ,07213, 2022-11-20, 2022-12-20), /* Cleiton fez um empréstimo livro "O capital"*/
-(20221370002, 111111111-11 ,01298, 2022-11-28, 2022-12-28); /* Raimundo fez um empréstimo livro "Sistemas Operativos Modernos"*/
+insert into Emprestimo(matricula_usuario, cpf_funcionario, cod_exemplar,data_de_emprestimo, data_de_devolucao)
+value(2022001, null,02946, '2022-11-20', '2022-12-21'), /* Vanessa fez um empréstimo livro "Psicologia das cores"*/
+(2022002, '15624829361' ,02946, '2022-11-30', '2022-12-30'), /* Rita fez um empréstimo livro "Psicologia das cores"*/
+(2022001, '15624829361' ,47420, '2022-11-06', '2022-12-25'), /* Laís fez um empréstimo livro "Uma breve história do tempo"*/
+(2022003, '10274829351' ,07213, '2022-11-20', '2022-12-26'), /* Cleiton fez um empréstimo livro "O capital"*/
+(2022004, '10274829351' ,01298, '2022-11-28', '2022-12-28'); /* Raimundo fez um empréstimo livro "Sistemas Operativos Modernos"*/
+select * from Emprestimo;
 
 
-/*finalizar os inserts e corrigir os que ricardo fez*/
-insert into Funcionário(cpf, nome, telefone, data_de_nascimento, rua, uf, cep,
- cidade, bairro,numero, login, senha, tipo, cpf_responsavel_cadastro)
-value('10274829351','Caetano Veloso', '98867-1235', '1975-10-05', 'Avenida Coremas','PB', '58013-430', 'João Pessoa','Centro','565' , 156248293-61, 'CaetanoV', 'whereareyounow123'),
-(156248293-61,'Alcione', 99357-1251, 1955-11-13, 'Rua Guadalupe','PB', 58079-806, 'João Pessoa','Grotão', 777, 129248629-65, 20221370008,'Alcione', 'Youmetiradosério33'),
-(129248629-65,'Renata Costa', 98887-1235, 1975-03-05, 'Rua Comerciário Antônio Manoel de Sousa','PB', 58071-585, 'João Pessoa','Cristo Redentor',18 , 102748293-51, 'RenataC', '1RenatasóRenata'),
-(102520493-67,'Catarina Rios', 98868-3215, 1985-10-10, 'Conjunto Jacinto Medeiros','PB', 58026-080, 'João Pessoa','Treze de Maio',122 , 129248629-65, 'CatarinaR', 'RiozinhoBB56'),
-(412748299-54,'Felipe Neto', 98867-1235, 1984-04-11, 'Rua Osvaldo Travassos Campos','PB', 58080-540, 'João Pessoa','Ernani Sátiro',19, 102748293-51, 'FelipeN', 'CriativonoMINEgamemod1');
-/*Inserindo informações na tabela de Atendentes*/
 
 
  
