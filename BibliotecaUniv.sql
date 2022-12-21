@@ -47,7 +47,7 @@ create table Escrito_por(
 
 /*** Criação da Tabela Usuário ***/
 create table Usuario(
-	matricula							bigint			not null,
+	matricula							int			not null,
     nome								varchar(45)		not null,
     /* tem q colocar a constraint de nao poder ser data futura*/
     data_de_nascimento					date			not null,
@@ -226,7 +226,9 @@ value('10274829351','Caetano Veloso', '98867-1235', '1975-10-05', 'Avenida Corem
 ('15624829361','Alcione', '99357-1251', '1955-11-13', 'Rua Guadalupe','PB', '58079-806', 'João Pessoa','Grotão', '777', null, null, null, '10274829351'),
 ('12924862965','Renata Costa', '98887-1235', '1975-03-05', 'Rua Comerciário Antônio Manoel de Sousa','PB', '58071-585', 'João Pessoa','Cristo Redentor','18', null, null, null, '10274829351'),
 ('10252049367','Catarina Rios', '98868-3215', '1985-10-10', 'Conjunto Jacinto Medeiros','PB', '58026-080', 'João Pessoa','Treze de Maio','122', null, null, null, '10274829351'),
-('41274829954','Felipe Neto', '98867-1235', '1984-04-11', 'Rua Osvaldo Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','19', null, null, null, '10274829351');
+('41274829954','Felipe Neto', '98867-1235', '1984-01-11', 'Rua Osvaldo camara Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','19', null, null, null, '10274829351'),
+('41274829953','Eliana', '98867-1235', '1984-06-11', 'Rua da areia Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','193', null, null, null, '10274829351'),
+('41274829951','Edemberg', '98867-1235', '1994-05-11', 'Rua Osvaldo Travassos Campos','PE', '58080-510', 'Recife','Boa Viagem','21', 'edemberg', '123456', 'atendente', '10274829351');
 /*Inserindo informações na tabela de Atendentes*/
 select * from Funcionario;
 
@@ -240,6 +242,15 @@ value(2022001, null,02946, '2022-11-20', '2022-12-21'), /* Vanessa fez um empré
 (2022003, '10274829351' ,07213, '2022-11-20', '2022-12-26'), /* Cleiton fez um empréstimo livro "O capital"*/
 (2022004, '10274829351' ,01298, '2022-11-28', '2022-12-28'); /* Raimundo fez um empréstimo livro "Sistemas Operativos Modernos"*/
 select * from Emprestimo;
+
+select * 
+from Emprestimo
+where cpf_funcionario is null;
+
+select * 
+from Exemplar
+where quantidade between 11 and 30;
+
 
 
 
