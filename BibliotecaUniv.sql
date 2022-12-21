@@ -23,6 +23,7 @@ create table Livro(
     classificacao_por_assunto			varchar(45)		not null,
     constraint pk_ISBN					primary key (ISBN),
     constraint ck_numero_da_edicao		check(numero_da_edicao > 0)
+    constraint ck_ISBN_livro			check(ISBN_livro > 0)
 );
 
 /*** Criação da Tabela Exemplar ***/
@@ -33,6 +34,7 @@ create table Exemplar(
     constraint pk_exemplar				primary key (cod_exemplar,ISBN_livro),
     /* se o relacionamento é identificador entao essa fk nao deveria compor a pk?*/
     constraint fk_livro_exemplar		foreign key (ISBN_livro) references Livro (ISBN)
+    
 );
 
 /*** Criação da Tabela Escrito_por ***/
@@ -160,13 +162,16 @@ select * from Autor;
 
 /* Inserindo informações na tabela livro*/
 insert into Livro(ISBN, editora, numero_da_edicao, titulo, classificacao_por_assunto)
-values(1, 'Pearson' , 4, 'Sistemas Operativos Modernos', 'tecnologia');
-/* Inseridos sem a edição*/
-insert into Livro(ISBN, editora,numero_da_edicao, titulo, classificacao_por_assunto)
-values(2, 'olhares', null, 'Psicologia das cores', 'designer' ),
-(3, 'objetiva', null, 'O poder do hábito', 'psicologia'),
-(4, 'intrinsace', null, 'Uma Breve História do Tempo', 'física'),
-(5, 'Veneta', null, 'O capital','sociologia' );
+values(1, 'Pearson' , 4, 'Sistemas Operativos Modernos', 'tecnologia'),
+(2, 'olhares', 4, 'Psicologia das cores', 'designer' ),
+(3, 'objetiva', 2, 'O poder do hábito', 'psicologia'),
+(4, 'intrinsace', 13, 'Uma Breve História do Tempo', 'física'),
+(5, 'Veneta', null, 'O capital','sociologia' ),
+(6, 'Pearson', 1, 'O senhor dos aneis', 'Fantasia'),
+(7, 'Rocco', 1, 'Harry Potter e a preda filosonal', 'Fantasia'),
+(8, 'Veneta', 5 , 'Jogos Vorazes', 'Ficcao'),
+(9, 'Rocco', 4, 'O pequeno Principe', 'Fantasia'),
+(10, 'Presença', 1,'Cartas de amor aos mortos', 'Tecnologia');
 select * from Livro;
 
 /* Inserindo informações na tabela Exemplar*/
@@ -189,13 +194,12 @@ select * from Escrito_por;
 
 /* Inserindo informações na tabela Usuario */
 insert into Usuario(matricula, nome, data_de_nascimento, rua, UF, CEP, cidade, bairro, numero, foto, data_de_validade, qr_code)
-values(2022001, 'Vanessa Silva', '2000-10-31', 'Avenida Coremas','PB', '58013-430', 'João Pessoa','Centro','561' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2024-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
-(2022002, 'Rita Clara', '2001-11-06', 'Rua Comerciário Antônio Manoel de Sousa','PB', '58071-585', 'João Pessoa','Cristo Redentor','20' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2022-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
-(2022003, 'Laís Epifanio Machado', '2002-10-10', 'Rua Osvaldo Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','16' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2023-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
-(2022004, 'Cleiton Bernadino', '2001-11-08', 'Conjunto Jacinto Medeiros','PB', '58026-080', 'João Pessoa','Treze de Maio','120' , load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2022-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png')),
-(2022005, 'Raimundo de Moraes', '2004-03-23', 'Rua Guadalupe','PB', '58079-806', 'João Pessoa','Grotão', '777', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'), '2024-12-31', load_file('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\imagem.png'));
+values(2022001, 'Vanessa Silva', '2000-10-31', 'Avenida Coremas','PB', '58013-430', 'João Pessoa','Centro','561' , load_file('/var/lib/mysql-files/imagem.png'), '2024-12-31', load_file('/var/lib/mysql-files/imagem.png')),
+(2022002, 'Rita Clara', '2001-11-06', 'Rua Comerciário Antônio Manoel de Sousa','PB', '58071-585', 'João Pessoa','Cristo Redentor','20' , load_file('/var/lib/mysql-files/imagem.png'), '2022-12-31', load_file('/var/lib/mysql-files/imagem.png')),
+(2022003, 'Laís Epifanio Machado', '2002-10-10', 'Rua Osvaldo Travassos Campos','PB', '58080-540', 'João Pessoa','Ernani Sátiro','16' , load_file('/var/lib/mysql-files/imagem.png'), '2023-12-31', load_file('/var/lib/mysql-files/imagem.png')),
+(2022004, 'Cleiton Bernadino', '2001-11-08', 'Conjunto Jacinto Medeiros','PB', '58026-080', 'João Pessoa','Treze de Maio','120' , load_file('/var/lib/mysql-files/imagem.png'), '2022-12-31', load_file('/var/lib/mysql-files/imagem.png')),
+(2022005, 'Raimundo de Moraes', '2004-03-23', 'Rua Guadalupe','PB', '58079-806', 'João Pessoa','Grotão', '777', load_file('/var/lib/mysql-files/imagem.png'), '2024-12-31', load_file('/var/lib/mysql-files/imagem.png'));
 select * from Usuario;
-
 /* 
 select load_file('/var/lib/mysql-files/imagem.png');
 select @@GLOBAL.secure_file_priv;
@@ -251,6 +255,22 @@ select *
 from Exemplar
 where quantidade between 11 and 30;
 
+select cep, count(*) as quantidade
+from Funcionario
+group by cep
+having cep like '58%';
+
+select min(data_de_nascimento)
+from Funcionario
+where cep like '58080%';
+
+select *
+from Autor
+order by data_de_nascimento desc;
+
+select *
+from Livro
+where numero_da_edicao not in (1,4);
 
 
 
